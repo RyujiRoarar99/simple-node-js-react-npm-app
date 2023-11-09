@@ -23,5 +23,17 @@ pipeline {
                 sh './jenkins/scripts/kill.sh'
             }
         }
+        stage('OWASP Dependency-Check Vulnerabilities') {
+            steps {
+                dependencyCheck additionalArugments: '''
+                            -o './'
+                            -s './'
+                            -f 'ALL'
+                            --prettyPrint''', odcInstallation: 'OWASP Dependancy-Check Vulnerabilities'
+
+                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+
+            }
+        }
     }
 }
